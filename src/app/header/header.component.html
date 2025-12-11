@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+  <span>
+    <a routerLink="/" class="nav-link">Products</a>
+  </span>
+  <span class="spacer"></span>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="20"></mat-spinner>
+  </div>
+
+  <ul *ngIf="!isLoading && userIsAuthenticated !== null">
+    <li *ngIf="userIsAuthenticated === true">
+      <a mat-button routerLink="/create" routerLinkActive="active-link"
+        >Create New Product</a
+      >
+    </li>
+    <li *ngIf="userIsAuthenticated === false">
+      <a mat-button routerLink="/login" routerLinkActive="active-link">Login</a>
+    </li>
+    <li *ngIf="userIsAuthenticated === false">
+      <a mat-button routerLink="/signup" routerLinkActive="active-link"
+        >Create Account</a
+      >
+    </li>
+    <li *ngIf="userIsAuthenticated === true">
+      <button mat-button (click)="onLogout()">Logout</button>
+    </li>
+  </ul>
+</mat-toolbar>
+
+<router-outlet />

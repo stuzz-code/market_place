@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{
+      mode === "create" ? "Create Product" : "Edit Product"
+    }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form" (submit)="onSubmit()" *ngIf="!isLoading">
+      <mat-form-field appearance="outline">
+        <mat-label>Product Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+          placeholder="Enter Product Name"
+        />
+        <mat-error *ngIf="form.get('name')?.invalid"
+          >Please enter a valid product name</mat-error
+        >
+      </mat-form-field>
+      <div class="image-button">
+        <button mat-stroked-button type="button" (click)="filePicker.click()">
+          Product Image
+        </button>
+        <input type="file" #filePicker (change)="onImagePicked($event)" />
+      </div>
+      <div
+        class="image-preview"
+        *ngIf="imagePreview != '' && imagePreview && form.get('image')?.valid"
+      >
+        <img [src]="imagePreview" [alt]="form.value.name" />
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Inventory</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="inventory"
+          placeholder="Enter inventory"
+          min="1"
+        />
+        <mat-error *ngIf="form.get('inventory')?.invalid"
+          >Please enter a valid inventory</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <input
+          matInput
+          type="number"
+          step="0.01"
+          formControlName="price"
+          placeholder="Enter price"
+          min="0.01"
+        />
+        <mat-error *ngIf="form.get('price')?.invalid"
+          >Please enter a valid price</mat-error
+        >
+      </mat-form-field>
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          {{ product ? "Edit Product" : "Add New Product" }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

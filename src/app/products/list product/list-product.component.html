@@ -1,0 +1,48 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="availableProducts.length > 0">
+  <mat-expansion-panel *ngFor="let product of availableProducts">
+    <mat-expansion-panel-header>
+      {{ product.name }} ({{ product.inventory }} in stock)
+    </mat-expansion-panel-header>
+    <div class="product-image">
+      <img
+        [src]="
+          product.imagePath ||
+          'http://localhost:3000/images/test-pic1-1753153504711.jpeg'
+        "
+        [alt]="product.name"
+      />
+    </div>
+    <p>Price: {{ product.price | currency }}</p>
+    <mat-action-row></mat-action-row>
+    <a
+      *ngIf="userIsAuthenticated && userId === product.creator"
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/edit', product.id]"
+      routerLinkActive="router-link-active"
+    >
+      Edit</a
+    >
+    <button
+      *ngIf="userIsAuthenticated && userId === product.creator"
+      mat-raised-button
+      color="warn"
+      (click)="onDeleteProduct(product.id!)"
+    >
+      Delete
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator
+  [length]="totalProducts"
+  [pageSize]="productsPerPage"
+  (page)="onChangedPage($event)"
+></mat-paginator>
+
+<app-product-create
+  *ngIf="selectedProduct"
+  [product]="selectedProduct"
+  (formSubmitted)="onFormSubmitted()"
+>
+</app-product-create>
